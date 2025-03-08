@@ -1,7 +1,7 @@
 services:
   unifi-network-application:
     image: lscr.io/linuxserver/unifi-network-application:latest
-    restart: unless-stopped
+    restart: always
     container_name: unifi-network-application
     volumes:
       - /data/unifi:/config
@@ -27,7 +27,7 @@ services:
       # - 5514:5514/udp   # optional (remote syslog)
   unifi-db:
     image: docker.io/mongo:7.0
-    restart: unless-stopped
+    restart: always
     container_name: unifi-db
     volumes:
       - /data/unifi-db:/data/db
