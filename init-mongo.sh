@@ -14,7 +14,10 @@ db.createUser({
   pwd: "${MONGO_PASS}",
   roles: [
     { db: "${MONGO_DBNAME}", role: "dbOwner" },
-    { db: "${MONGO_DBNAME}_stat", role: "dbOwner" }
+    { db: "${MONGO_DBNAME}_stat", role: "dbOwner" },
+    { db: "${MONGO_DBNAME}_audit", role: "dbOwner" },
+    { db: "${MONGO_AUTHSOURCE}", role: "readWriteAnyDatabase" },
+    { db: "${MONGO_AUTHSOURCE}", role: "dbAdminAnyDatabase" }
   ]
 })
 EOF

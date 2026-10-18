@@ -3,6 +3,8 @@ services:
     image: lscr.io/linuxserver/unifi-network-application:latest
     restart: always
     container_name: unifi-network-application
+    depends_on:
+      - unifi-db
     volumes:
       - /data/unifi:/config
     environment:
@@ -16,15 +18,14 @@ services:
       - MONGO_DBNAME=unifi
       - MONGO_AUTHSOURCE=admin
     ports:
-      - 8443:8443       # Unifi web admin
-      - 3478:3478/udp   # Unifi STUN
-      - 10001:10001/udp # AP discovery
-      - 8080:8080       # device communication
-      - 1900:1900/udp   # optional (discoverable on L2)
-      - 8843:8843       # optional (guest portal HTTPS redirect)
-      - 8880:8880       # optional (guest portal HTTP redirect)
-      - 6789:6789       # optional (mobile throughput test)
-      # - 5514:5514/udp   # optional (remote syslog)
+      - 8443:8443         # web UI/API (LAN + Tailscale only; NOT forwarded on the router)
+      - 8081:8081         # device inform; unifi.http.port=8081 in /data/unifi/data/system.properties (8080 stays with Nextcloud AIO)
+      - 3478:3478/udp     # STUN
+      - 10001:10001/udp   # AP discovery (L2 only)
+      - 1900:1900/udp     # optional L2 discovery
+      - 8843:8843         # optional guest portal HTTPS redirect
+      - 8880:8880         # optional guest portal HTTP redirect
+      - 6789:6789         # optional mobile throughput test
   unifi-db:
     image: docker.io/mongo:7.0
     restart: always
